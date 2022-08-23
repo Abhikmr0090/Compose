@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ComposePractice</string>
+    <string name="post">This is the dummy post used to test the post segment of clone and this text is defined in our strings.xml file which can be accessed by using te string resources component.</string>
+</resources>
