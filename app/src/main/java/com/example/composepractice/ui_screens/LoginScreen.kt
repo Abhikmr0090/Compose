@@ -1,4 +1,4 @@
-package com.example.composepractice
+package com.example.composepractice.ui_screens
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.composepractice.R
+import com.example.composepractice.ScreenRoutes
 import com.example.composepractice.models.LoginRequest
 import com.example.composepractice.network.ApiResult
 import com.example.composepractice.ui.theme.ConnectUpBG
@@ -34,6 +36,7 @@ import com.example.composepractice.ui.theme.GMAILBTN
 import com.example.composepractice.ui.theme.N200
 import com.example.composepractice.ui.theme.N400
 import com.example.composepractice.viewmodels.LoginViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
@@ -43,6 +46,10 @@ fun Login(navController: NavController, viewModel: LoginViewModel = viewModel())
     var password by remember { mutableStateOf("") }
     var isEmailEmpty by remember { mutableStateOf(false) }
     var isPasswordEmpty by remember { mutableStateOf(false) }
+    var loadingProgressBar by remember {
+        mutableStateOf(false)
+    }
+
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold {
@@ -150,45 +157,23 @@ fun Login(navController: NavController, viewModel: LoginViewModel = viewModel())
 
                         Spacer(modifier = Modifier.height(12.dp))
 
+
+                        if (loadingProgressBar)
+                          ShowLoader()
+
                         Button(
                             onClick = {
 
-                                isEmailEmpty = email.isEmpty()
+                                isEmailEmpty    = email.isEmpty()
                                 isPasswordEmpty = password.isEmpty()
 
-                                viewModel.login(
-                                    LoginRequest(
-                                        email,
-                                        password
-                                    )
-                                )
+                                viewModel.login(LoginRequest(email, password))
 
-                                coroutineScope.launch {
-                                    viewModel.loginResponse.collect {
-                                        when (it) {
-                                            is ApiResult.Loading -> {
-
-                                            }
-
-                                            is ApiResult.Success<*> -> {
-                                                navController.navigate(ScreenRoutes.HomeRoute.route) {
-                                                    popUpTo(ScreenRoutes.OnBoardingRoute.route) {
-                                                        inclusive = true
-                                                    }
-                                                }
-                                            }
-
-                                            is ApiResult.Error -> {
-
-                                            }
-                                            else -> {}
-                                        }
-                                    }
+                                callLoginApi(viewModel,navController,coroutineScope) {
+                                    loadingProgressBar = it
                                 }
 
-
                                 Log.d("TAG", "Login: ${viewModel.loginResponse.value}")
-
 
                             },
                             modifier = Modifier
@@ -307,8 +292,44 @@ fun Login(navController: NavController, viewModel: LoginViewModel = viewModel())
 
 }
 
-@Preview
+fun callLoginApi(
+    viewModel: LoginViewModel,
+    navController: NavController,
+    coroutineScope: CoroutineScope,
+    progressBar: (Boolean) -> Unit,
+) {
+    coroutineScope.launch {
+        viewModel.loginResponse.collect {
+            when (it) {
+                is ApiResult.Loading -> {
+                   progressBar.invoke(true)
+                }
+
+                is ApiResult.Success -> {
+                    progressBar.invoke(false)
+                    navController.navigate(ScreenRoutes.HomeRoute.route) {
+                        popUpTo(ScreenRoutes.OnBoardingRoute.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+
+                is ApiResult.Error -> {
+                    progressBar.invoke(false)
+                }
+                else -> {}
+            }
+        }
+    }
+}
+
+@Composable
+fun ShowLoader() {
+    CircularProgressIndicator(modifier = Modifier.size(60.dp), strokeWidth = 5.dp, color = ConnectUpBG)
+}
+
+@Preview(showBackground = true)
 @Composable
 fun LoginPreview() {
-    // Login()
+    ShowLoader()
 }

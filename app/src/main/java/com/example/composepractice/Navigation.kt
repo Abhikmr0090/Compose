@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.composepractice.ui_screens.BottomNavigationScreen
+import com.example.composepractice.ui_screens.Login
 import com.example.composepractice.ui_screens.OnBoarding
 import com.example.composepractice.viewmodels.LoginViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi

@@ -81,6 +81,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
 
+    //Constraint Layout
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+
     // Ktor
 //    implementation 'io.ktor:ktor-client-android:1.6.4'
 //    implementation 'io.ktor:ktor-client-serialization:1.6.4'
