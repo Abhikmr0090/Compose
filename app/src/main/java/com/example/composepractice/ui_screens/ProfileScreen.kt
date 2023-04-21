@@ -1,16 +1,19 @@
 package com.example.composepractice
 
-import android.widget.ImageButton
+import android.content.Intent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -25,7 +28,12 @@ import com.example.composepractice.bottomNav.BottomNavItems
 import com.example.composepractice.ui.theme.N100
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(navController: NavController?) {
+    fun openCamera () {
+        val intent  = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            
+        }
+    }
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -35,13 +43,21 @@ fun ProfileScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(305.dp)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            MaterialTheme.colors.primary,
+                            MaterialTheme.colors.onSecondary
+                        )
+                    )
+                )
         ) {
             Image(
                 modifier = Modifier
                     .align(alignment = Alignment.TopEnd)
                     .padding(top = 22.dp, end = 22.dp)
                     .clickable {
-                         navController.navigate(BottomNavItems.EditProfile.route)
+                        navController?.navigate(BottomNavItems.EditProfile.route)
                     },
                 imageVector = Icons.Filled.Edit,
                 contentDescription = null,
@@ -52,7 +68,7 @@ fun ProfileScreen(navController: NavController) {
                     .height(305.dp)
                     .fillMaxSize(),
                 contentScale = ContentScale.Crop,
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                painter = painterResource(id = R.drawable.ic_launcher_background),
                 contentDescription = null,
             )
 
@@ -61,7 +77,8 @@ fun ProfileScreen(navController: NavController) {
                     modifier = Modifier
                         .size(135.dp)
                         .align(alignment = Alignment.CenterHorizontally)
-                        .clip(RoundedCornerShape(26.dp)),
+                        .clip(RoundedCornerShape(26.dp))
+                        .clickable { openCamera() },
                     painter = painterResource(id = R.drawable.ic_person_search),
                     contentDescription = null
                 )
@@ -178,5 +195,5 @@ fun ProfileScreen(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewProfile() {
-  //  ProfileScreen()
+      ProfileScreen(null)
 }

@@ -307,6 +307,7 @@ fun callLoginApi(
 
                 is ApiResult.Success -> {
                     progressBar.invoke(false)
+
                     navController.navigate(ScreenRoutes.HomeRoute.route) {
                         popUpTo(ScreenRoutes.OnBoardingRoute.route) {
                             inclusive = true

@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.composepractice.*
+import com.example.composepractice.ui_screens.MoreScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 
 @ExperimentalPagerApi
@@ -36,7 +37,7 @@ fun BottomNavGraph(
         }
 
         composable(route = BottomNavItems.More.route) {
-
+            MoreScreen(navController)
         }
 
         composable(route = BottomNavItems.EditProfile.route) {

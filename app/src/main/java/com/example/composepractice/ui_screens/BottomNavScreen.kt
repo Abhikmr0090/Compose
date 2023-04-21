@@ -1,6 +1,7 @@
 package com.example.composepractice.ui_screens
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -28,7 +29,6 @@ import com.example.composepractice.bottomNav.bottomItem
 import com.example.composepractice.ui.theme.ConnectUpBG
 import com.google.accompanist.pager.ExperimentalPagerApi
 
-@OptIn(ExperimentalComposeUiApi::class)
 @ExperimentalPagerApi
 @Composable
 fun BottomNavigationScreen() {
@@ -76,9 +76,9 @@ fun BottomNavigationScreen() {
                                 modifier = Modifier
                                     .width(12.dp)
                                     .height(12.dp)
-                                    .constrainAs(count){
-                                            bottom.linkTo(bellIcon.bottom)
-                                            end.linkTo(bellIcon.end)
+                                    .constrainAs(count) {
+                                        bottom.linkTo(bellIcon.bottom)
+                                        end.linkTo(bellIcon.end)
                                     },
                                 onDraw = {
                                     drawCircle(color = Color.Red, radius = 22f)
